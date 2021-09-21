@@ -1,0 +1,39 @@
+When you upgrade the helm chart using helm upgrade command the values will reset
+Eg: The service was cluster IP and you have modified to Node Port, again if you upgrade the chart it will be cluster IP.
+
+```sh
+helm upgrade monitoring prom-repo/kube-prometheus-stack --set grafana.adminPassword=admin
+```
+
+Now its going to reset to default values.
+
+To show the values
+
+```sh
+helm show values prom-repo/kube-prometheus-stack
+```
+
+To set the service as nodeport
+
+```sh
+helm upgrade monitoring prom-repo/kube-prometheus-stack --set grafana.adminPassword=admin --set grafana.service.type=NodePort
+```
+
+or do the changes in values.yaml file and refer to the values.yaml file in the helm command
+
+changes in values.yaml
+
+```sh
+grafana:
+  adminPassword: admin
+  service:
+    portName: service
+    type: NodePort
+    nodePort: 30008
+```
+
+after the changes run the helm command
+
+```sh
+helm upgrade monitoring prom-repo/kube-prometheus-stack --values=values.yaml
+```
